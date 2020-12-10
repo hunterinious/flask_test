@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+   db:
+     ports:
+       - "5432:5432"
+     image: postgres:12-alpine
+     environment:
+       PGPASSWORD: "test"
+       PGUSER: "test"
+
+       POSTGRES_PASSWORD: "test"
+       POSTGRES_USER: "test"
+       POSTGRES_DB: "test_task"
+       POSTGRES_TEST_DB: "test"
