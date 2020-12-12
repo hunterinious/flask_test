@@ -1,0 +1,1 @@
+from src.links.models import Link
