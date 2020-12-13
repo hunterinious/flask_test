@@ -1,0 +1,26 @@
+from marshmallow import Schema, fields, ValidationError
+import re
+
+
+def validate_days(days):
+    if days > 365:
+        raise ValidationError("Expire can\'t be more than 1 year")
+    if days < 1:
+        raise ValidationError("Expire can\'t be less than 1 day")
+
+
+def validate_long_url(url):
+    regex = re.compile(
+        r'^((?:http|ftp)s?://)?'
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?))'
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+    if not bool(re.match(regex, url)):
+        raise ValidationError('Please, give a valid url')
+    if len(url) > 2048:
+        raise ValidationError('Long url allows no more than 2048 characters')
+
+
+class LinkCreateSchema(Schema):
+    long_url = fields.Str(required=True, validate=validate_long_url)
+    days = fields.Int(required=False, validate=validate_days)

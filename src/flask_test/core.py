@@ -20,4 +20,5 @@ def create_app(config):
 
 
 def add_resources(api):
-    pass
+    from src.links.resources import LinkAPI
+    api.add_resource(LinkAPI, '/link/create')
