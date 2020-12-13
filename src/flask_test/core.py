@@ -9,6 +9,9 @@ def create_app(config):
     db.init_app(app)
     migrate.init_app(app, db)
 
+    from src.flask_test.marshmallow import ma
+    ma.init_app(app)
+
     from flask_restful import Api
     api = Api(app, prefix="/api")
     add_resources(api)

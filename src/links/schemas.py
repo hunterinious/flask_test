@@ -1,3 +1,4 @@
+from src.flask_test.marshmallow import ma
 from marshmallow import Schema, fields, ValidationError
 import re
 
@@ -24,3 +25,8 @@ def validate_long_url(url):
 class LinkCreateSchema(Schema):
     long_url = fields.Str(required=True, validate=validate_long_url)
     days = fields.Int(required=False, validate=validate_days)
+
+
+class LinkSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'short_url', 'long_url')
