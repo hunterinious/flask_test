@@ -1,11 +1,12 @@
 from flask import request, jsonify, redirect
 from marshmallow import ValidationError
-from flask_restful import Resource, abort
+from flask_restful import Resource
 from .models import Link
 from .schemas import LinkSchema, LinkCreateSchema
+from .shortcuts import get_link_or_404
 
 
-class LinkAPI(Resource):
+class CreateLinkAPI(Resource):
     def post(self):
         json_data = request.get_json()
         days = json_data.get('days')
@@ -22,13 +23,13 @@ class LinkAPI(Resource):
         return jsonify(LinkSchema().dump(link), 200)
 
 
+class RetrieveLinkAPI(Resource):
+    def get(self, id):
+        link = get_link_or_404(id)
+        return jsonify(LinkSchema().dump(link), 200)
+
+
 class LinkRedirectAPI(Resource):
     def get(self, id):
-        link = Link.get_link(id)
-        error_message = 'Link doesn\'t exist'
-        if not link:
-            abort(404, error=error_message)
-        if link.is_link_expired():
-            link.delete_link()
-            abort(404, error=error_message)
+        link = get_link_or_404(id)
         return redirect(link.long_url, code=302)
