@@ -17,13 +17,17 @@ class Link(db.Model):
         self.expire_date = expire_date
 
     @classmethod
+    def get_link(cls, id):
+        return cls.query.get(id)
+
+    @classmethod
     def create_link(cls, long_url, expire_date):
         base_url = 'http://test/'
         bts = os.urandom(4)
         short_url = b32encode(bts).decode('utf-8')
         link = Link.query.filter_by(short_url=base_url + short_url).first()
 
-        if link and not cls.is_link_expired(link):
+        if link and not link.is_link_expired():
             while Link.query.filter_by(short_url=base_url + short_url).first():
                 bts = os.urandom(4)
                 short_url = b32encode(bts).decode('utf-8')
@@ -35,12 +39,14 @@ class Link(db.Model):
         db.session.commit()
         return new_link
 
+    def delete_link(self):
+        db.session.delete(self)
+
     @staticmethod
     def calculate_expire_date(days):
         if days:
             return datetime.now() + timedelta(days=days)
         return None
 
-    @staticmethod
-    def is_link_expired(link):
-        return datetime.now() > link.expire_date
+    def is_link_expired(self):
+        return datetime.now() > self.expire_date

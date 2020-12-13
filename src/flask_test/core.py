@@ -20,5 +20,7 @@ def create_app(config):
 
 
 def add_resources(api):
-    from src.links.resources import LinkAPI
+    from src.links.resources import LinkAPI, LinkRedirectAPI
+
     api.add_resource(LinkAPI, '/link/create')
+    api.add_resource(LinkRedirectAPI, '/link/<int:id>/redirect')
