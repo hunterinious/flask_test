@@ -44,9 +44,7 @@ class Link(db.Model):
 
     @staticmethod
     def calculate_expire_date(days):
-        if days:
-            return datetime.now() + timedelta(days=days)
-        return None
+        return datetime.now() + timedelta(days=days)
 
     def is_link_expired(self):
         return datetime.now() > self.expire_date

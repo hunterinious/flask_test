@@ -17,10 +17,10 @@ class CreateLinkAPI(Resource):
         except ValidationError as error:
             return error.messages, 400
 
-        expire_date = Link.calculate_expire_date(days)
+        expire_date = Link.calculate_expire_date(days) if days else None
         link = Link.create_link(long_url, expire_date)
 
-        return jsonify(LinkSchema().dump(link), 200)
+        return jsonify(LinkSchema().dump(link))
 
 
 class RetrieveLinkAPI(Resource):
