@@ -11,6 +11,13 @@ def test_post_create_link_API(client):
     assert 'short_url' in data
     assert 'long_url' in data
 
+    response = client.post('/api/links/create', json={'long_url': 'https://ua.jooble.org'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert 'id' in data
+    assert 'short_url' in data
+    assert 'long_url' in data
+
 
 def test_empty_long_url(client):
     response = client.post('/api/links/create', json={'days': 8})
