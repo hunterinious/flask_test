@@ -3,7 +3,7 @@ from random import choice
 from string import ascii_uppercase
 
 
-def test_post_create_link_API(client):
+def test_create_link(client):
     response = client.post('/api/links/create', json={'long_url': 'https://ua.jooble.org', 'days': 8})
     assert response.status_code == 200
     data = response.get_json()
@@ -48,4 +48,3 @@ def test_long_url_max_length(client):
     assert response.status_code == 400
     data = response.get_json()
     assert 'Long url allows no more than 2048 characters' in data.get('long_url', [])
-
