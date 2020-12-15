@@ -1,7 +1,13 @@
 from src.flask_test import config
 from src.flask_test.core import create_app
+import os
 
-app = create_app(config.DevelopmentConfig)
+
+conf = os.environ.get('env', 'development')
+if conf == 'development':
+    app = create_app(config.DevelopmentConfig)
+elif conf == 'test':
+    app = create_app(config.TestConfig)
 
 
 @app.shell_context_processor
