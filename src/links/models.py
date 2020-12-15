@@ -26,16 +26,11 @@ class Link(db.Model):
             while Link.query.filter_by(short_url=base_url + short_url).first():
                 bts = os.urandom(4)
                 short_url = b32encode(bts).decode('utf-8')
-        elif link:
-            db.session.delete(link)
 
         new_link = cls(short_url=base_url + short_url, long_url=long_url, expire_date=expire_date)
         db.session.add(new_link)
         db.session.commit()
         return new_link
-
-    def delete_link(self):
-        db.session.delete(self)
 
     @staticmethod
     def calculate_expire_date(days):
