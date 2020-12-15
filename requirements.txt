@@ -21,6 +21,8 @@ psycopg2-binary==2.8.6
 py==1.10.0
 pyparsing==2.4.7
 pytest==6.2.0
+pytest-dotenv==0.5.2
+pytest-flask==1.1.0
 python-dateutil==2.8.1
 python-dotenv==0.15.0
 python-editor==1.0.4
