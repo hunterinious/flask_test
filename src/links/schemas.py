@@ -1,6 +1,8 @@
 from src.flask_test.marshmallow import ma
 from marshmallow import Schema, fields, ValidationError
+from .models import Link
 import re
+import os
 
 
 def validate_days(days):
@@ -28,5 +30,10 @@ class LinkCreateSchema(Schema):
 
 
 class LinkSchema(ma.Schema):
+    short_url = fields.Method('get_short_url')
+
     class Meta:
         fields = ('id', 'short_url', 'long_url')
+
+    def get_short_url(self, obj):
+        return os.environ.get('BASE_URL') + obj.short_url
