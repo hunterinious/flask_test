@@ -11,11 +11,6 @@ class Link(db.Model):
     long_url = db.Column(db.String(2048), nullable=False)
     expire_date = db.Column(db.TIMESTAMP(timezone=False), nullable=False, default=datetime.now() + timedelta(days=90))
 
-    def __init__(self, short_url, long_url, expire_date):
-        self.short_url = short_url
-        self.long_url = long_url
-        self.expire_date = expire_date
-
     @classmethod
     def get_link(cls, id):
         return cls.query.get(id)
@@ -34,7 +29,7 @@ class Link(db.Model):
         elif link:
             db.session.delete(link)
 
-        new_link = cls(base_url + short_url, long_url, expire_date)
+        new_link = cls(short_url=base_url + short_url, long_url=long_url, expire_date=expire_date)
         db.session.add(new_link)
         db.session.commit()
         return new_link
