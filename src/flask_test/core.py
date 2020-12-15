@@ -37,7 +37,7 @@ def add_resources(api):
 def add_crontabs(crontab):
     from src.links.models import Link
 
-    @crontab.job(minute="1")
+    @crontab.job(hour="1")
     def set_is_expired_for_all_links():
         Link.set_is_expired_for_all_links()
 
