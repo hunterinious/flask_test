@@ -4,7 +4,7 @@ services:
    db:
      ports:
        - "5432:5432"
-     image: postgres:12-alpine
+     image: postgres:13-alpine
      environment:
        PGPASSWORD: "test"
        PGUSER: "test"
