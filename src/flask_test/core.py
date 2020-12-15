@@ -12,6 +12,10 @@ def create_app(config):
     from src.flask_test.marshmallow import ma
     ma.init_app(app)
 
+    from src.flask_test.crontab import crontab
+    crontab.init_app(app)
+    add_crontabs(crontab)
+
     from flask_restful import Api
     api = Api(app, prefix="/api")
     add_resources(api)
@@ -28,3 +32,12 @@ def add_resources(api):
     api.add_resource(CreateLinkAPI, '/links/create')
     api.add_resource(RetrieveLinkAPI, '/links/<int:id>/retrieve')
     api.add_resource(LinkRedirectAPI, '/links/<int:id>/redirect')
+
+
+def add_crontabs(crontab):
+    from src.links.models import Link
+
+    @crontab.job(minute="1")
+    def set_is_expired_for_all_links():
+        Link.set_is_expired_for_all_links()
+

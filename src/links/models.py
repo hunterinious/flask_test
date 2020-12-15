@@ -39,20 +39,21 @@ class Link(db.Model):
     def create_link(cls, long_url, expire_date):
         bts = os.urandom(cls.NUMBER_OF_RANDOM_BYTES_FOR_SHORT_URL)
         short_url = b32encode(bts).decode('utf-8')
-        link = Link.query.filter_by(short_url=short_url).first()
-        link_expired = link.is_link_expired() if link else False
+        query = Link.query.filter_by(short_url=short_url, is_expired=False).first()
 
-        if link and not link_expired:
-            while Link.query.filter_by(short_url=short_url).first():
+        if query:
+            while query:
                 bts = os.urandom(4)
                 short_url = b32encode(bts).decode('utf-8')
-        elif link_expired:
-            link.expired = True
 
         new_link = cls(short_url=short_url, long_url=long_url, expire_date=expire_date)
         db.session.add(new_link)
         db.session.commit()
         return new_link
+
+    @classmethod
+    def set_is_expired_for_all_links(cls):
+        cls.query.filter(datetime.now() > cls.expire_date).update({cls.is_expired: True})
 
     @staticmethod
     def calculate_expire_date(days):
