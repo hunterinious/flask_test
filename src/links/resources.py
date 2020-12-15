@@ -26,7 +26,7 @@ class CreateLinkAPI(Resource):
 class RetrieveLinkAPI(Resource):
     def get(self, id):
         link = get_link_or_404(id)
-        return jsonify(LinkSchema().dump(link), 200)
+        return jsonify(LinkSchema().dump(link))
 
 
 class LinkRedirectAPI(Resource):
