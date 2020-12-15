@@ -8,7 +8,8 @@ def create_links_from_json(json_links):
     for link in json_links:
         year, month, day, hour, minutes = link['expire_date'].split('-')
         expire_date = datetime(int(year), int(month), int(day), int(hour), int(minutes))
-        link = Link(long_url=link['long_url'], short_url=link['short_url'], expire_date=expire_date)
+        link = Link(long_url=link['long_url'], short_url=link['short_url'],
+                    expire_date=expire_date, is_expired=bool(link['is_expired']))
         links.append(link)
         db.session.add(link)
 
