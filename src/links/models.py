@@ -16,6 +16,11 @@ class Link(db.Model):
                             default=datetime.now() + timedelta(days=int(os.environ.get('DEFAULT_STORAGE_DAYS'))))
     is_expired = db.Column(db.Boolean, nullable=False, default=False)
 
+    __table_args__ = (
+        db.Index('links_short_url_not_expired_index', short_url,
+                 postgresql_where=(~is_expired)),
+    )
+
     @property
     def expired(self):
         return self.is_expired
