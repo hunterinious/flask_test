@@ -6,7 +6,7 @@ import os
 
 class Link(db.Model):
     __tablename__ = 'links'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     short_url = db.Column(db.String(35), unique=True, nullable=False)
     long_url = db.Column(db.String(2048), nullable=False)
     expire_date = db.Column(db.TIMESTAMP(timezone=False), nullable=False, default=datetime.now() + timedelta(days=90))
