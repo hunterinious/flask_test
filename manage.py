@@ -3,7 +3,7 @@ from src.flask_test.core import create_app
 import os
 
 
-conf = os.environ.get('env', 'development')
+conf = os.environ.get('ENV', 'development')
 if conf == 'development':
     app = create_app(config.DevelopmentConfig)
 elif conf == 'test':
