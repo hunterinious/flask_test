@@ -45,6 +45,7 @@ class Link(db.Model):
             while query:
                 bts = os.urandom(4)
                 short_url = b32encode(bts).decode('utf-8')
+                query = Link.query.filter_by(short_url=short_url, is_expired=False).first()
 
         new_link = cls(short_url=short_url, long_url=long_url, expire_date=expire_date)
         db.session.add(new_link)

@@ -6,8 +6,7 @@ from datetime import datetime
 def create_links_from_json(json_links):
     links = []
     for link in json_links:
-        year, month, day, hour, minutes = link['expire_date'].split('-')
-        expire_date = datetime(int(year), int(month), int(day), int(hour), int(minutes))
+        expire_date = datetime.strptime(link['expire_date'], "%Y-%m-%d-%H-%M")
         link = Link(long_url=link['long_url'], short_url=link['short_url'],
                     expire_date=expire_date, is_expired=bool(link['is_expired']))
         links.append(link)

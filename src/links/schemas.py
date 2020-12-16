@@ -1,7 +1,5 @@
 from src.flask_test.marshmallow import ma
 from marshmallow import Schema, fields, ValidationError
-from .models import Link
-import re
 import os
 
 
@@ -13,19 +11,12 @@ def validate_days(days):
 
 
 def validate_long_url(url):
-    regex = re.compile(
-        r'^((?:http|ftp)s?://)?'
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?))'
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-
-    if not bool(re.match(regex, url)):
-        raise ValidationError('Please, give a valid url')
     if len(url) > 2048:
         raise ValidationError('Long url allows no more than 2048 characters')
 
 
 class LinkCreateSchema(Schema):
-    long_url = fields.Str(required=True, validate=validate_long_url)
+    long_url = fields.URL(required=True, validate=validate_long_url)
     days = fields.Int(required=False, validate=validate_days)
 
 

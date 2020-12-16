@@ -37,7 +37,7 @@ def test_wrong_long_url(client, long_url):
     response = client.post('/api/links/create', json={'long_url': long_url, 'days': 8})
     assert response.status_code == 400
     data = response.get_json()
-    assert 'Please, give a valid url' in data.get('long_url', [])
+    assert 'Not a valid URL.' in data.get('long_url', [])
 
 
 def test_long_url_max_length(client):
